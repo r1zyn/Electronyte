@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Electronyte
+namespace Electronyte.structures
 {
-    struct ConfigJson
+    struct Configuration
     {
         [JsonProperty("token")]
         public string Token { get; private set; }

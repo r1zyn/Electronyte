@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using Newtonsoft.Json;
 using System;
@@ -7,7 +8,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Electronyte
+namespace Electronyte.client
 {
     public class ElectronyteClient
     {
@@ -21,7 +22,7 @@ namespace Electronyte
             using (var sr = new StreamReader(fs, new UTF8Encoding(false)))
                 json = await sr.ReadToEndAsync().ConfigureAwait(false);
 
-            var configJson = JsonConvert.DeserializeObject<ConfigJson>(json);
+            var configJson = JsonConvert.DeserializeObject<Configuration>(json);
 
             DiscordConfiguration configOptions = new DiscordConfiguration
             {
@@ -50,8 +51,28 @@ namespace Electronyte
 
         private async Task<Task> ReadyEvent(object sender, ReadyEventArgs e)
         {
+            /*
+            int[] users = new int[] {};
+            int i = 0;
+
+            foreach (DiscordGuild guild in Client.Guilds.Values)
+            {
+                users[i] = guild.MemberCount;
+                i++;
+            }
+
+            int sum = 0;
+            Array.ForEach(users, delegate (int i) { sum += i; });
+            */
+
+            DiscordActivity activity = new DiscordActivity
+            {
+                ActivityType = ActivityType.Watching,
+                Name = "stuff" //$"{sum} users"
+            };
+
             Console.WriteLine("Ready!");
-            await Client.UpdateStatusAsync(new DSharpPlus.Entities.DiscordActivity($"{Client}"));
+            await Client.UpdateStatusAsync(activity, UserStatus.Online);
             return Task.CompletedTask;
         }
     }
